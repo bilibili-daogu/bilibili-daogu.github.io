@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扫雷 · 科幻版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            background: #0A0A14;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .game-wrapper {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(10,10,20,0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(0,243,255,0.3);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background: rgba(255,0,255,0.1);
+            border: 2px solid #FF00FF;
+            border-radius: 30px;
+            color: #FF00FF;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .back-link:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #FF00FF;
+        }
+        h1 {
+            color: #00F3FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00F3FF;
+        }
+        .subtitle {
+            color: #FF00FF;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+        .difficulty {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .diff-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 2px solid #00F3FF;
+            border-radius: 30px;
+            color: #00F3FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .diff-btn:hover { background: #00F3FF; color: #0A0A14; box-shadow: 0 0 20px #00F3FF; }
+        .diff-btn.active { background: #00F3FF; color: #0A0A14; }
+        .control-panel {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,243,255,0.1);
+            border: 2px solid #00F3FF;
+            border-radius: 50px;
+            padding: 15px 25px;
+            margin-bottom: 30px;
+        }
+        .panel-item { text-align: center; }
+        .panel-label { color: #FF00FF; font-size: 0.8rem; font-family: 'Orbitron', sans-serif; }
+        .panel-value { color: #00F3FF; font-size: 1.8rem; font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 10px #00F3FF; }
+        .board-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .game-board {
+            display: inline-grid;
+            gap: 2px;
+            background: rgba(0,243,255,0.2);
+            border: 2px solid #00F3FF;
+            border-radius: 10px;
+            padding: 5px;
+        }
+        .cell {
+            width: 35px;
+            height: 35px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,243,255,0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00F3FF;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .cell.revealed { background: rgba(0,243,255,0.1); border-color: #FF00FF; }
+        .cell.flagged::before { content: '⚑'; color: #FF00FF; }
+        .cell.mine.revealed::before { content: '💣'; }
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 25px;
+            background: transparent;
+            border: 2px solid #FF00FF;
+            border-radius: 10px;
+            color: #FF00FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .reset-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 30px #FF00FF;
+        }
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            color: #FF00FF;
+            font-size: 1.2rem;
+            min-height: 30px;
+        }
+        @media (max-width:600px) {
+            .game-wrapper { padding: 20px; }
+            h1 { font-size: 2rem; }
+            .cell { width: 30px; height: 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <a href="/games/" class="back-link">← 返回游戏中心</a>
+        <h1>💣 扫雷</h1>
+        <div class="subtitle">✦ 经典推理游戏 ✦</div>
+        <div class="difficulty">
+            <button class="diff-btn active" onclick="setDifficulty('beginner')">初级</button>
+            <button class="diff-btn" onclick="setDifficulty('intermediate')">中级</button>
+            <button class="diff-btn" onclick="setDifficulty('expert')">高级</button>
+        </div>
+        <div class="control-panel">
+            <div class="panel-item"><div class="panel-label">剩余雷数</div><div class="panel-value" id="mineCount">010</div></div>
+            <div class="panel-item"><div class="panel-label">时间</div><div class="panel-value" id="timer">000</div></div>
+            <div class="panel-item"><div class="panel-label">得分</div><div class="panel-value" id="score">0</div></div>
+        </div>
+        <div class="board-container"><div class="game-board" id="gameBoard"></div></div>
+        <button class="reset-btn" onclick="resetGame()">🔄 新的一局</button>
+        <div class="status" id="status">点击格子开始游戏</div>
+    </div>
+    <script>
+        // 扫雷逻辑 (同之前提供的版本)
+        const difficulties = { beginner:{rows:9,cols:9,mines:10}, intermediate:{rows:16,cols:16,mines:40}, expert:{rows:16,cols:30,mines:99} };
+        let currentDifficulty='beginner', board,mines,revealed,flagged,gameOver=false,gameWon=false,gameStarted=false,rows=9,cols=9,totalMines=10,flagsPlaced=0,timer=0,timerInterval=null,score=0;
+        function initBoard(){
+            rows=difficulties[currentDifficulty].rows; cols=difficulties[currentDifficulty].cols; totalMines=difficulties[currentDifficulty].mines;
+            board=Array(rows).fill().map(()=>Array(cols).fill(0));
+            mines=Array(rows).fill().map(()=>Array(cols).fill(false));
+            revealed=Array(rows).fill().map(()=>Array(cols).fill(false));
+            flagged=Array(rows).fill().map(()=>Array(cols).fill(false));
+            gameOver=false; gameWon=false; gameStarted=false; flagsPlaced=0; score=0;
+            updateDisplay(); renderBoard(); stopTimer(); document.getElementById('timer').textContent='000'; document.getElementById('status').textContent='点击格子开始游戏';
+        }
+        function generateMines(firstRow,firstCol){
+            let minesPlaced=0;
+            while(minesPlaced<totalMines){
+                let r=Math.floor(Math.random()*rows), c=Math.floor(Math.random()*cols);
+                if(!mines[r][c] && (Math.abs(r-firstRow)>1 || Math.abs(c-firstCol)>1)){ mines[r][c]=true; minesPlaced++; }
+            }
+            for(let i=0;i<rows;i++) for(let j=0;j<cols;j++) if(!mines[i][j]){
+                let cnt=0;
+                for(let di=-1;di<=1;di++) for(let dj=-1;dj<=1;dj++){
+                    let ni=i+di, nj=j+dj;
+                    if(ni>=0&&ni<rows&&nj>=0&&nj<cols&&mines[ni][nj]) cnt++;
+                }
+                board[i][j]=cnt;
+            }
+        }
+        function handleClick(row,col,isRightClick){
+            if(gameOver||gameWon) return;
+            if(isRightClick){
+                if(!revealed[row][col]){ flagged[row][col]=!flagged[row][col]; flagsPlaced+=flagged[row][col]?1:-1; updateDisplay(); renderBoard(); checkWin(); }
+                return;
+            }
+            if(flagged[row][col]) return;
+            if(!gameStarted){ startTimer(); gameStarted=true; generateMines(row,col); }
+            if(mines[row][col]){ gameOver=true; stopTimer(); revealAll(); document.getElementById('status').textContent='💥 游戏结束'; }
+            else{ revealCell(row,col); checkWin(); }
+            renderBoard();
+        }
+        function revealCell(row,col){
+            if(row<0||row>=rows||col<0||col>=cols) return;
+            if(revealed[row][col]||flagged[row][col]||mines[row][col]) return;
+            revealed[row][col]=true; score+=10; updateDisplay();
+            if(board[row][col]===0){
+                for(let di=-1;di<=1;di++) for(let dj=-1;dj<=1;dj++) revealCell(row+di,col+dj);
+            }
+        }
+        function revealAll(){ for(let i=0;i<rows;i++) for(let j=0;j<cols;j++) if(mines[i][j]) revealed[i][j]=true; renderBoard(); }
+        function checkWin(){
+            let revealedCount=0;
+            for(let i=0;i<rows;i++) for(let j=0;j<cols;j++) if(revealed[i][j]) revealedCount++;
+            if(revealedCount===rows*cols-totalMines){ gameWon=true; stopTimer(); document.getElementById('status').textContent='✨ 恭喜胜利 ✨'; }
+        }
+        function renderBoard(){
+            let boardEl=document.getElementById('gameBoard'), html='';
+            boardEl.style.gridTemplateColumns=`repeat(${cols}, 1fr)`;
+            for(let i=0;i<rows;i++) for(let j=0;j<cols;j++){
+                let cls='cell', content='';
+                if(revealed[i][j]){ cls+=' revealed'; if(mines[i][j]) cls+=' mine'; else if(board[i][j]>0) content=board[i][j]; }
+                else if(flagged[i][j]) cls+=' flagged';
+                html+=`<div class="${cls}" data-row="${i}" data-col="${j}">${content}</div>`;
+            }
+            boardEl.innerHTML=html;
+        }
+        function updateDisplay(){
+            document.getElementById('mineCount').textContent=(totalMines-flagsPlaced).toString().padStart(3,'0');
+            document.getElementById('score').textContent=score;
+        }
+        function startTimer(){ stopTimer(); timer=0; timerInterval=setInterval(()=>{ timer++; document.getElementById('timer').textContent=timer.toString().padStart(3,'0'); },1000); }
+        function stopTimer(){ if(timerInterval) clearInterval(timerInterval); }
+        function resetGame(){ stopTimer(); initBoard(); }
+        function setDifficulty(diff){
+            currentDifficulty=diff;
+            document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
+            event.target.classList.add('active');
+            resetGame();
+        }
+        document.addEventListener('DOMContentLoaded',()=>{
+            initBoard();
+            document.getElementById('gameBoard').addEventListener('click',e=>{
+                let cell=e.target.closest('.cell'); if(!cell) return;
+                handleClick(parseInt(cell.dataset.row), parseInt(cell.dataset.col), false);
+            });
+            document.getElementById('gameBoard').addEventListener('contextmenu',e=>{
+                e.preventDefault();
+                let cell=e.target.closest('.cell'); if(!cell) return;
+                handleClick(parseInt(cell.dataset.row), parseInt(cell.dataset.col), true);
+            });
+        });
+    </script>
+</body>
+</html>

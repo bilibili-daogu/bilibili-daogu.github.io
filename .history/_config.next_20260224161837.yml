@@ -1,0 +1,24 @@
+# 主题方案（选择有侧边栏的）
+scheme: Pisces
+
+# 深色模式
+darkmode: true
+
+# 侧边栏配置
+sidebar:
+  position: left
+  width: 300
+  toc:
+    enable: true
+    number: true
+    max_depth: 3
+
+# 目录配置
+toc:
+  enable: true
+  number: true
+  max_depth: 3
+
+# 自定义样式文件（如果你有）
+custom_file_path:
+  style: source/_data/styles.styl

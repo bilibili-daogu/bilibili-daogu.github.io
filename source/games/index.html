@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>游戏中心 · 科幻版</title>
+    <style>
+        /* 科幻配色变量 */
+        :root {
+            --neon-cyan: #00F3FF;
+            --neon-magenta: #FF00FF;
+            --neon-purple: #9D00FF;
+            --deep-space: #0A0A14;
+            --space-blue: #1a1a2e;
+            --text-light: #E0E0FF;
+        }
+
+        /* 全局样式 */
+        body {
+            background: linear-gradient(135deg, var(--deep-space) 0%, var(--space-blue) 100%);
+            color: var(--text-light);
+            font-family: 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* 返回按钮 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 25px;
+            margin: 20px 0;
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid var(--neon-magenta);
+            border-radius: 40px;
+            color: var(--neon-magenta);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            background: var(--neon-magenta);
+            color: var(--deep-space);
+            box-shadow: 0 0 30px var(--neon-magenta);
+            transform: translateX(-5px);
+        }
+
+        /* 标题 */
+        h1 {
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            text-align: center;
+            text-shadow: 
+                0 0 10px var(--neon-cyan),
+                0 0 20px var(--neon-cyan),
+                0 0 40px rgba(0, 243, 255, 0.5);
+            margin: 20px 0 10px;
+            animation: neon-flicker 3s infinite alternate;
+        }
+
+        @keyframes neon-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 
+                    0 0 10px var(--neon-cyan),
+                    0 0 20px var(--neon-cyan),
+                    0 0 40px rgba(0, 243, 255, 0.5);
+            }
+            20%, 24%, 55% {
+                text-shadow: 
+                    0 0 5px var(--neon-cyan),
+                    0 0 10px var(--neon-cyan);
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--neon-magenta);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        /* 游戏网格 */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 游戏卡片 */
+        .game-card {
+            background: rgba(10, 10, 20, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 243, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--neon-cyan), 
+                var(--neon-magenta), 
+                var(--neon-purple));
+            border-radius: 22px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .game-card:hover::before {
+            opacity: 1;
+        }
+
+        .game-icon {
+            font-size: 5rem;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px var(--neon-cyan));
+            transition: all 0.4s;
+        }
+
+        .game-card:hover .game-icon {
+            transform: rotate(360deg) scale(1.1);
+            filter: drop-shadow(0 0 25px var(--neon-magenta));
+        }
+
+        .game-card h3 {
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .game-card:hover h3 {
+            color: var(--neon-magenta);
+            text-shadow: 0 0 15px var(--neon-magenta);
+        }
+
+        .game-desc {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin: 15px 0;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .game-category {
+            display: inline-block;
+            padding: 5px 15px;
+            background: rgba(0, 243, 255, 0.2);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 20px;
+            color: var(--neon-cyan);
+            font-size: 0.9rem;
+            margin: 10px 0;
+        }
+
+        .game-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 15px 0;
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            border-radius: 10px;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .game-btn:hover {
+            background: var(--neon-cyan);
+            color: var(--deep-space);
+            box-shadow: 0 0 30px var(--neon-cyan);
+        }
+
+        /* 热门区域 */
+        .hot-section {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid var(--neon-magenta);
+            border-radius: 30px;
+        }
+
+        .hot-title {
+            color: var(--neon-magenta);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .hot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .hot-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            border-radius: 15px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .hot-item:hover {
+            border-color: var(--neon-magenta);
+            transform: translateX(10px);
+            background: rgba(255, 0, 255, 0.1);
+        }
+
+        .hot-rank {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--deep-space);
+        }
+
+        /* 字体导入 */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .games-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← 返回星际总部</a>
+
+    <h1>🎮 游戏中心</h1>
+    <div class="subtitle">✦ 第7星际游戏终端 ✦</div>
+
+    <div class="games-grid">
+        <!-- 扫雷 -->
+        <div class="game-card">
+            <div class="game-icon">💣</div>
+            <h3>扫雷</h3>
+            <p class="game-desc">经典扫雷游戏，左键挖开右键标记，三种难度可选。</p>
+            <span class="game-category">经典游戏</span>
+            <a href="/games/minesweeper.html" class="game-btn">启动游戏</a>
+        </div>
+
+        <!-- 2048 -->
+        <div class="game-card">
+            <div class="game-icon">🧮</div>
+            <h3>2048</h3>
+            <p class="game-desc">数字合成游戏，滑动合并相同数字，挑战2048高分。</p>
+            <span class="game-category">益智游戏</span>
+            <a href="/games/2048.html" class="game-btn">启动游戏</a>
+        </div>
+
+        <!-- 贪吃蛇 -->
+        <div class="game-card">
+            <div class="game-icon">🐍</div>
+            <h3>贪吃蛇</h3>
+            <p class="game-desc">经典贪吃蛇，方向键控制，吃食物变长。</p>
+            <span class="game-category">经典游戏</span>
+            <a href="/games/snake.html" class="game-btn">启动游戏</a>
+        </div>
+
+        <!-- 打砖块 -->
+        <div class="game-card">
+            <div class="game-icon">🧱</div>
+            <h3>打砖块</h3>
+            <p class="game-desc">移动挡板反弹球，打掉所有砖块，重温街机经典。</p>
+            <span class="game-category">动作游戏</span>
+            <a href="/games/breakout.html" class="game-btn">启动游戏</a>
+        </div>
+
+        <!-- 五子棋 -->
+        <div class="game-card">
+            <div class="game-icon">⚫</div>
+            <h3>五子棋</h3>
+            <p class="game-desc">双人对战或挑战AI，五子连珠即可获胜。</p>
+            <span class="game-category">益智游戏</span>
+            <a href="/games/gobang.html" class="game-btn">启动游戏</a>
+        </div>
+
+        <!-- 太空射击 -->
+        <div class="game-card">
+            <div class="game-icon">🚀</div>
+            <h3>太空射击</h3>
+            <p class="game-desc">驾驶飞船，消灭敌人。WASD移动，空格开火。</p>
+            <span class="game-category">动作游戏</span>
+            <a href="/games/space-shooter.html" class="game-btn">启动游戏</a>
+        </div>
+
+        <!-- 记忆翻牌 -->
+        <div class="game-card">
+            <div class="game-icon">🃏</div>
+            <h3>记忆翻牌</h3>
+            <p class="game-desc">考验你的记忆力，找出所有配对卡片。</p>
+            <span class="game-category">益智游戏</span>
+            <a href="/games/memory.html" class="game-btn">启动游戏</a>
+        </div>
+    </div>
+
+    <!-- 热门推荐 -->
+    <div class="hot-section">
+        <div class="hot-title">
+            <span>🔥</span>
+            <span>热门排行榜</span>
+        </div>
+        <div class="hot-grid">
+            <div class="hot-item">
+                <span class="hot-rank">1</span>
+                <span style="flex:1; font-weight: bold;">2048</span>
+                <span style="color: var(--neon-cyan);">2.3k人玩过</span>
+            </div>
+            <div class="hot-item">
+                <span class="hot-rank">2</span>
+                <span style="flex:1; font-weight: bold;">扫雷</span>
+                <span style="color: var(--neon-cyan);">1.8k人玩过</span>
+            </div>
+            <div class="hot-item">
+                <span class="hot-rank">3</span>
+                <span style="flex:1; font-weight: bold;">贪吃蛇</span>
+                <span style="color: var(--neon-cyan);">1.2k人玩过</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

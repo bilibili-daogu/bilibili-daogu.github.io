@@ -1,0 +1,47 @@
+# _config.next.yml
+
+# Schemes
+# scheme: Muse
+# scheme: Mist
+# scheme: Pisces
+scheme: Gemini
+
+# Dark Mode
+darkmode: true
+# _config.next.yml
+custom_file_path:
+  style: source/_data/styles.styl
+font:
+  enable: true
+  global:
+    external: true
+    family: Rajdhani, sans-serif
+  headings:
+    external: true
+    family: Orbitron, sans-serif
+  title:
+    external: true
+    family: Orbitron, sans-serif
+# 目录设置
+# 目录设置
+toc:
+  enable: true
+  number: true
+  max_depth: 3
+
+# 文章目录美化
+toc_style:
+  color: true           # 开启彩色目录
+  hover_animation: true # 悬停动画
+# 侧边栏配置
+sidebar:
+  position: left                # 侧边栏位置：left 或 right
+  width: 300                    # 侧边栏宽度（像素）
+  toc:
+    enable: true                # 在侧边栏显示目录
+    number: true                # 显示序号
+    max_depth: 3                # 最大深度
+
+# 确保侧边栏在文章页显示
+toc:
+  enable: true

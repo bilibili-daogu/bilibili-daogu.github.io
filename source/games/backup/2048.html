@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 · 科幻版</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: #0A0A14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .game-container {
+            background: rgba(10,10,20,0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0,243,255,0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #00F3FF;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px #00F3FF;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .score-box {
+            background: rgba(0,243,255,0.1);
+            border: 1px solid #00F3FF;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: #00F3FF;
+            font-size: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .new-game {
+            background: transparent;
+            border: 2px solid #FF00FF;
+            color: #FF00FF;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .new-game:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #FF00FF;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: rgba(0,243,255,0.1);
+            border: 2px solid #00F3FF;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,243,255,0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00F3FF;
+            font-family: 'Share Tech Mono', monospace;
+            transition: all 0.2s;
+        }
+        .cell[data-value="2"] { background: rgba(0,243,255,0.2); color: #00F3FF; }
+        .cell[data-value="4"] { background: rgba(0,243,255,0.3); color: #00F3FF; }
+        .cell[data-value="8"] { background: rgba(255,0,255,0.2); color: #FF00FF; }
+        .cell[data-value="16"] { background: rgba(255,0,255,0.3); color: #FF00FF; }
+        .cell[data-value="32"] { background: rgba(255,0,255,0.4); color: #FF00FF; }
+        .cell[data-value="64"] { background: rgba(255,0,255,0.5); color: #FFFFFF; }
+        .cell[data-value="128"] { background: rgba(255,215,0,0.2); color: #FFD700; }
+        .cell[data-value="256"] { background: rgba(255,215,0,0.3); color: #FFD700; }
+        .cell[data-value="512"] { background: rgba(255,215,0,0.4); color: #FFD700; }
+        .cell[data-value="1024"] { background: rgba(255,215,0,0.5); color: #FFFFFF; }
+        .cell[data-value="2048"] { background: rgba(255,215,0,0.6); color: #FFFFFF; text-shadow: 0 0 10px gold; }
+        .instructions {
+            color: rgba(224,224,255,0.8);
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #FF00FF;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            text-shadow: 0 0 10px #FF00FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <a href="/games/" class="back-link">← 返回游戏中心</a>
+        <h1>2048</h1>
+        
+        <div class="header">
+            <div class="score-box" id="score">0</div>
+            <button class="new-game" id="newGame">新游戏</button>
+        </div>
+        
+        <div class="grid" id="grid">
+            <!-- 动态生成格子 -->
+        </div>
+        
+        <div class="instructions">
+            ｜ 方向键移动 ｜ 相同数字合并 ｜ 凑出2048 ｜
+        </div>
+    </div>
+
+    <script>
+        class Game2048 {
+            constructor() {
+                this.grid = [];
+                this.score = 0;
+                this.init();
+                this.setupListeners();
+            }
+            
+            init() {
+                this.grid = Array(4).fill().map(() => Array(4).fill(0));
+                this.score = 0;
+                this.addNewTile();
+                this.addNewTile();
+                this.render();
+            }
+            
+            addNewTile() {
+                const empty = [];
+                for (let i = 0; i < 4; i++) {
+                    for (let j = 0; j < 4; j++) {
+                        if (this.grid[i][j] === 0) empty.push([i, j]);
+                    }
+                }
+                if (empty.length === 0) return;
+                const [row, col] = empty[Math.floor(Math.random() * empty.length)];
+                this.grid[row][col] = Math.random() < 0.9 ? 2 : 4;
+            }
+            
+            move(direction) {
+                let moved = false;
+                const oldGrid = JSON.parse(JSON.stringify(this.grid));
+                
+                if (direction === 'left' || direction === 'right') {
+                    for (let i = 0; i < 4; i++) {
+                        const row = this.grid[i];
+                        const filtered = row.filter(v => v !== 0);
+                        if (direction === 'right') filtered.reverse();
+                        
+                        for (let j = 0; j < filtered.length - 1; j++) {
+                            if (filtered[j] === filtered[j + 1]) {
+                                filtered[j] *= 2;
+                                this.score += filtered[j];
+                                filtered.splice(j + 1, 1);
+                            }
+                        }
+                        
+                        while (filtered.length < 4) filtered.push(0);
+                        if (direction === 'right') filtered.reverse();
+                        this.grid[i] = filtered;
+                    }
+                } else {
+                    for (let j = 0; j < 4; j++) {
+                        const col = [];
+                        for (let i = 0; i < 4; i++) col.push(this.grid[i][j]);
+                        const filtered = col.filter(v => v !== 0);
+                        if (direction === 'down') filtered.reverse();
+                        
+                        for (let i = 0; i < filtered.length - 1; i++) {
+                            if (filtered[i] === filtered[i + 1]) {
+                                filtered[i] *= 2;
+                                this.score += filtered[i];
+                                filtered.splice(i + 1, 1);
+                            }
+                        }
+                        
+                        while (filtered.length < 4) filtered.push(0);
+                        if (direction === 'down') filtered.reverse();
+                        for (let i = 0; i < 4; i++) this.grid[i][j] = filtered[i];
+                    }
+                }
+                
+                moved = JSON.stringify(oldGrid) !== JSON.stringify(this.grid);
+                if (moved) {
+                    this.addNewTile();
+                    this.render();
+                }
+            }
+            
+            render() {
+                const gridElement = document.getElementById('grid');
+                gridElement.innerHTML = '';
+                for (let i = 0; i < 4; i++) {
+                    for (let j = 0; j < 4; j++) {
+                        const value = this.grid[i][j];
+                        const cell = document.createElement('div');
+                        cell.className = 'cell';
+                        cell.setAttribute('data-value', value);
+                        cell.textContent = value || '';
+                        gridElement.appendChild(cell);
+                    }
+                }
+                document.getElementById('score').textContent = this.score;
+            }
+            
+            setupListeners() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key.startsWith('Arrow')) e.preventDefault();
+                    if (e.key === 'ArrowLeft') this.move('left');
+                    if (e.key === 'ArrowRight') this.move('right');
+                    if (e.key === 'ArrowUp') this.move('up');
+                    if (e.key === 'ArrowDown') this.move('down');
+                });
+                
+                document.getElementById('newGame').addEventListener('click', () => {
+                    this.init();
+                });
+            }
+        }
+        
+        new Game2048();
+    </script>
+</body>
+</html>

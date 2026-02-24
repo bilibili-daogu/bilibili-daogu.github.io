@@ -1,0 +1,553 @@
+// ==================================================
+// 科幻博客完整样式
+// 包含：深空背景、霓虹文字、毛玻璃效果、闪烁动画
+// ==================================================
+
+// ---------- 科幻配色变量 ----------
+$neon-cyan = #00F3FF        // 霓虹青
+$neon-magenta = #FF00FF      // 霓虹品红
+$neon-purple = #9D00FF       // 霓虹紫
+$deep-space = #0A0A14        // 深空蓝黑
+$space-blue = #1a1a2e        // 太空蓝
+$text-light = #E0E0FF        // 浅紫白文字
+$glow-white = #FFFFFF        // 发光白
+
+// ---------- 全局背景 ----------
+body {
+  background: linear-gradient(135deg, $deep-space 0%, $space-blue 100%);
+  color: $text-light;
+  font-family: 'Rajdhani', 'Microsoft YaHei', sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+
+// 为星空背景留出空间
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+// ---------- 毛玻璃效果容器 ----------
+.header-inner, 
+.main-inner, 
+.sidebar-inner,
+.footer-inner {
+  background: rgba(10, 10, 20, 0.6) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba($neon-cyan, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba($neon-cyan, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba($neon-cyan, 0.4);
+    box-shadow: 0 0 40px rgba($neon-cyan, 0.2);
+  }
+}
+
+// ---------- 霓虹文字效果 ----------
+.site-title {
+  color: $neon-cyan;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 
+    0 0 5px $neon-cyan,
+    0 0 10px $neon-cyan,
+    0 0 20px rgba($neon-cyan, 0.7),
+    0 0 40px rgba($neon-cyan, 0.5);
+  animation: neon-flicker 3s infinite alternate;
+  
+  &:hover {
+    color: $neon-magenta;
+    text-shadow: 
+      0 0 5px $neon-magenta,
+      0 0 15px $neon-magenta,
+      0 0 30px rgba($neon-magenta, 0.7);
+  }
+}
+
+// ---------- 闪烁动画 ----------
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 
+      0 0 5px $neon-cyan,
+      0 0 10px $neon-cyan,
+      0 0 20px rgba($neon-cyan, 0.7);
+  }
+  20%, 24%, 55% {
+    opacity: 0.7;
+    text-shadow: 
+      0 0 3px $neon-cyan,
+      0 0 7px $neon-cyan;
+  }
+}
+
+// ---------- 链接样式 ----------
+a {
+  color: $neon-cyan;
+  border-bottom: 1px dashed rgba($neon-cyan, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-weight: 500;
+  
+  &:hover {
+    color: $neon-magenta;
+    border-bottom-color: $neon-magenta;
+    text-shadow: 0 0 8px $neon-magenta;
+    transform: translateX(2px);
+  }
+}
+
+// ---------- 菜单项 ----------
+.menu-item {
+  a {
+    color: $text-light;
+    border-bottom: none;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    
+    &:hover {
+      color: $neon-cyan;
+      text-shadow: 0 0 8px $neon-cyan;
+      transform: translateX(5px);
+    }
+    
+    &::before {
+      content: '>';
+      color: $neon-magenta;
+      opacity: 0;
+      margin-right: 0;
+      transition: all 0.3s ease;
+    }
+    
+    &:hover::before {
+      opacity: 1;
+      margin-right: 5px;
+    }
+  }
+}
+
+// ---------- 文章标题 ----------
+.post-title {
+  a {
+    color: $neon-cyan;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    border-bottom: none;
+    
+    &:hover {
+      color: $neon-magenta;
+      text-shadow: 0 0 10px $neon-magenta;
+    }
+  }
+}
+
+// ---------- 文章元数据 ----------
+.post-meta {
+  color: rgba($text-light, 0.7);
+  font-size: 0.9rem;
+  
+  a {
+    color: rgba($neon-cyan, 0.8);
+    border-bottom: none;
+    
+    &:hover {
+      color: $neon-magenta;
+    }
+  }
+  
+  .post-meta-item::before {
+    color: $neon-purple;
+  }
+}
+
+// ---------- 代码块科幻风格 ----------
+code, pre {
+  background: rgba(0, 0, 0, 0.7) !important;
+  border-left: 3px solid $neon-cyan;
+  border-radius: 4px;
+  color: #00ff9d !important;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  box-shadow: 0 0 10px rgba($neon-cyan, 0.2);
+}
+
+pre {
+  padding: 15px !important;
+  border: 1px solid rgba($neon-cyan, 0.2);
+  
+  &:hover {
+    border-color: rgba($neon-cyan, 0.5);
+    box-shadow: 0 0 20px rgba($neon-cyan, 0.3);
+  }
+}
+
+// ---------- 滚动条美化 ----------
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $deep-space;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $neon-cyan, $neon-purple);
+  border-radius: 5px;
+  
+  &:hover {
+    background: linear-gradient(135deg, $neon-magenta, $neon-cyan);
+  }
+}
+
+// ---------- 选中文字效果 ----------
+::selection {
+  background: rgba($neon-magenta, 0.3);
+  color: $glow-white;
+  text-shadow: 0 0 5px $neon-magenta;
+}
+
+// ---------- 分类和标签页 ----------
+.category-list, .tag-list {
+  a {
+    border-bottom: none;
+    
+    &:hover {
+      transform: translateX(3px);
+    }
+  }
+  
+  .category-list-count, .tag-list-count {
+    color: rgba($neon-cyan, 0.6);
+  }
+}
+
+// ---------- 分页器 ----------
+.pagination {
+  .page-number, .extend {
+    background: rgba(10, 10, 20, 0.6);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba($neon-cyan, 0.2);
+    color: $text-light;
+    
+    &:hover {
+      border-color: $neon-cyan;
+      color: $neon-cyan;
+      box-shadow: 0 0 10px rgba($neon-cyan, 0.3);
+    }
+    
+    &.current {
+      background: rgba($neon-cyan, 0.2);
+      border-color: $neon-cyan;
+      color: $neon-cyan;
+    }
+  }
+}
+
+// ---------- 页脚 ----------
+.footer {
+  color: rgba($text-light, 0.6);
+  
+  a {
+    color: rgba($neon-cyan, 0.8);
+    
+    &:hover {
+      color: $neon-magenta;
+    }
+  }
+}
+
+// ---------- 移动端适配 ----------
+@media (max-width: 767px) {
+  .site-title {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+  }
+  
+  .header-inner, .main-inner {
+    border-radius: 8px;
+  }
+}
+// ==================================================
+// 科幻风格文章目录
+// ==================================================
+
+// 目录容器
+.post-toc {
+  background: rgba(10, 10, 20, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba($neon-cyan, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 20px rgba($neon-cyan, 0.1);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: rgba($neon-cyan, 0.4);
+    box-shadow: 0 0 30px rgba($neon-cyan, 0.2);
+  }
+}
+
+// 目录标题
+.post-toc-title {
+  color: $neon-cyan;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba($neon-cyan, 0.3);
+  position: relative;
+  
+  &::before {
+    content: '📖';
+    margin-right: 8px;
+    color: $neon-magenta;
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, $neon-cyan, $neon-magenta);
+    border-radius: 2px;
+  }
+}
+
+// 目录列表
+.post-toc ol {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+// 目录项
+.post-toc-item {
+  margin: 8px 0;
+  padding-left: 20px;
+  position: relative;
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-left-color: $neon-magenta;
+    padding-left: 25px;
+    
+    .post-toc-link {
+      color: $neon-magenta;
+      text-shadow: 0 0 5px $neon-magenta;
+    }
+  }
+  
+  // 序号样式
+  .post-toc-number {
+    color: rgba($neon-cyan, 0.7);
+    font-family: 'Share Tech Mono', monospace;
+    margin-right: 5px;
+    font-size: 0.9rem;
+  }
+}
+
+// 目录链接
+.post-toc-link {
+  color: $text-light;
+  text-decoration: none;
+  border-bottom: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+  
+  &:hover {
+    color: $neon-cyan;
+    transform: translateX(3px);
+  }
+}
+
+// 当前活动目录项
+.post-toc-item.active {
+  border-left-color: $neon-cyan;
+  background: rgba($neon-cyan, 0.05);
+  
+  .post-toc-link {
+    color: $neon-cyan;
+    font-weight: 500;
+    text-shadow: 0 0 3px $neon-cyan;
+  }
+  
+  .post-toc-number {
+    color: $neon-cyan;
+  }
+}
+
+// 不同层级的缩进
+.post-toc-child {
+  padding-left: 25px;
+  margin-top: 5px;
+  
+  .post-toc-item {
+    font-size: 0.9rem;
+  }
+}
+
+// 展开/折叠按钮
+.post-toc-toggle {
+  color: $neon-cyan;
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba($neon-cyan, 0.3);
+  background: rgba($neon-cyan, 0.1);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: rgba($neon-cyan, 0.2);
+    border-color: $neon-magenta;
+    color: $neon-magenta;
+  }
+}
+
+// 滚动条美化（针对目录）
+.post-toc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.post-toc::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $neon-cyan, $neon-purple);
+  border-radius: 2px;
+}
+
+// 无目录时的提示
+.post-toc-empty {
+  color: rgba($text-light, 0.6);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+  
+  &::before {
+    content: '🚀';
+    margin-right: 5px;
+  }
+}
+
+// 移动端适配
+@media (max-width: 767px) {
+  .post-toc {
+    padding: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .post-toc-item {
+    padding-left: 15px;
+    
+    &:hover {
+      padding-left: 20px;
+    }
+  }
+}
+// ==================================================
+// 科幻导航菜单 - 霓虹下划线
+// ==================================================
+
+.menu {
+  text-align: center;
+  padding: 20px 0 !important;
+  background: transparent !important;
+}
+
+.menu-item {
+  display: inline-block;
+  margin: 0 15px !important;
+  position: relative;
+  
+  a {
+    color: $text-light !important;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    padding: 5px 0 !important;
+    transition: all 0.3s ease !important;
+    position: relative;
+    
+    // 下划线效果
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, $neon-cyan, $neon-magenta);
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px $neon-cyan;
+    }
+    
+    &:hover {
+      color: $neon-cyan !important;
+      text-shadow: 0 0 8px $neon-cyan;
+      
+      &::after {
+        width: 100%;
+      }
+    }
+    
+    // 当前页面高亮
+    &.active {
+      color: $neon-cyan !important;
+      
+      &::after {
+        width: 100%;
+        box-shadow: 0 0 15px $neon-cyan;
+      }
+    }
+  }
+  
+  // 左侧装饰点
+  &::before {
+    content: '◆';
+    color: $neon-cyan;
+    opacity: 0;
+    margin-right: 5px;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  
+  &:hover::before {
+    opacity: 1;
+    transform: rotate(180deg);
+    color: $neon-magenta;
+  }
+}
+
+// 移动端适配
+@media (max-width: 767px) {
+  .menu-item {
+    display: block;
+    margin: 10px 0 !important;
+    
+    &::before {
+      display: none;
+    }
+  }
+}

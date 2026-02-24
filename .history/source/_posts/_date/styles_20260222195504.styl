@@ -1,0 +1,58 @@
+// source/_data/styles.styl
+
+// 定义科幻配色变量
+$neon-cyan = #00F3FF
+$neon-magenta = #FF00FF
+$deep-space = #0A0A14
+$text-light = #E0E0FF
+
+// 应用全局配色
+body {
+  background-color: $deep-space;
+  color: $text-light;
+}
+
+// 主容器和头部背景使用毛玻璃效果
+.header-inner, .main-inner {
+  background: rgba(10, 10, 20, 0.6) !important; // 半透明深空色
+  backdrop-filter: blur(10px); // 毛玻璃模糊效果
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba($neon-cyan, 0.2); // 淡淡的霓虹边框
+}
+
+// 链接颜色
+a {
+  color: $neon-cyan;
+  border-bottom-color: $neon-cyan;
+  &:hover {
+    color: $neon-magenta;
+  }
+}
+
+// 站点名称使用霓虹文字效果
+.site-brand-container {
+  .site-title {
+    color: $neon-cyan;
+    text-shadow: 0 0 5px $neon-cyan, 0 0 10px $neon-cyan, 0 0 20px #0084FF;
+    animation: flicker 1.5s infinite alternate;
+  }
+}
+
+// 复制上一轮的霓虹文字动画
+@keyframes flicker {
+  0%, 19%, 21%, 59%, 61%, 100% { opacity: 1; }
+  20%, 60% { opacity: 0.8; }
+}
+
+// 菜单栏图标和文字
+.menu-item a {
+  color: $text-light;
+  &:hover {
+    color: $neon-magenta;
+  }
+}
+
+// 文章标题
+.post-title a {
+  color: $neon-cyan;
+}

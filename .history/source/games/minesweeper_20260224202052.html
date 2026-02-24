@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扫雷 · 科幻版</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        body {
+            background: #0A0A14;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(10,10,20,0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(0,243,255,0.3);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            padding: 8px 20px;
+            background: rgba(255,0,255,0.1);
+            border: 2px solid #FF00FF;
+            border-radius: 30px;
+            color: #FF00FF;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #FF00FF;
+        }
+        h1 {
+            color: #00F3FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 0 0 10px #00F3FF;
+            margin: 10px 0;
+        }
+        .subtitle {
+            color: #FF00FF;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+        .stats-panel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            background: rgba(0,243,255,0.1);
+            border: 2px solid #00F3FF;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-label {
+            color: #FF00FF;
+            font-size: 0.8rem;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+        .stat-value {
+            color: #00F3FF;
+            font-size: 2rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 10px #00F3FF;
+        }
+        .difficulty {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .diff-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 2px solid #00F3FF;
+            border-radius: 30px;
+            color: #00F3FF;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .diff-btn:hover, .diff-btn.active {
+            background: #00F3FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #00F3FF;
+        }
+        .board-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .game-board {
+            display: inline-grid;
+            gap: 2px;
+            background: rgba(0,243,255,0.2);
+            border: 2px solid #00F3FF;
+            border-radius: 10px;
+            padding: 5px;
+        }
+        .cell {
+            width: 35px;
+            height: 35px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,243,255,0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #00F3FF;
+            cursor: pointer;
+        }
+        .cell.revealed {
+            background: rgba(0,243,255,0.1);
+            border-color: #FF00FF;
+        }
+        .cell.flagged::before { content: '⚑'; color: #FF00FF; }
+        .cell.mine.revealed::before { content: '💣'; }
+        .reset-btn {
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid #FF00FF;
+            border-radius: 10px;
+            color: #FF00FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        .reset-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 30px #FF00FF;
+        }
+        .status {
+            text-align: center;
+            margin-top: 15px;
+            color: #FF00FF;
+            font-size: 1.2rem;
+            min-height: 30px;
+        }
+        @media (max-width: 600px) {
+            .game-container { padding: 15px; }
+            h1 { font-size: 2rem; }
+            .cell { width: 30px; height: 30px; }
+            .stat-value { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <a href="/games/" class="back-btn">← 返回</a>
+            <div></div>
+        </div>
+        <h1>💣 扫雷</h1>
+        <div class="subtitle">✦ 经典推理 ✦</div>
+        
+        <div class="difficulty">
+            <button class="diff-btn active" onclick="setDiff('beginner')">初级</button>
+            <button class="diff-btn" onclick="setDiff('intermediate')">中级</button>
+            <button class="diff-btn" onclick="setDiff('expert')">高级</button>
+        </div>
+        
+        <div class="stats-panel">
+            <div class="stat-item">
+                <div class="stat-label">剩余雷数</div>
+                <div class="stat-value" id="mineCount">10</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">时间</div>
+                <div class="stat-value" id="timer">000</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">得分</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+        </div>
+        
+        <div class="board-container">
+            <div class="game-board" id="gameBoard"></div>
+        </div>
+        
+        <button class="reset-btn" onclick="resetGame()">🔄 新游戏</button>
+        <div class="status" id="status">点击格子开始</div>
+    </div>
+
+    <script>
+        // 扫雷游戏逻辑
+        const difficulties = {
+            beginner: { rows: 9, cols: 9, mines: 10 },
+            intermediate: { rows: 16, cols: 16, mines: 40 },
+            expert: { rows: 16, cols: 30, mines: 99 }
+        };
+        
+        let currentDiff = 'beginner';
+        let rows = 9, cols = 9, totalMines = 10;
+        let board = [], mines = [], revealed = [], flagged = [];
+        let gameOver = false, gameStarted = false;
+        let flagsPlaced = 0, score = 0, timer = 0;
+        let timerInterval = null;
+        
+        function initBoard() {
+            let diff = difficulties[currentDiff];
+            rows = diff.rows; cols = diff.cols; totalMines = diff.mines;
+            board = Array(rows).fill().map(() => Array(cols).fill(0));
+            mines = Array(rows).fill().map(() => Array(cols).fill(false));
+            revealed = Array(rows).fill().map(() => Array(cols).fill(false));
+            flagged = Array(rows).fill().map(() => Array(cols).fill(false));
+            gameOver = false; gameStarted = false;
+            flagsPlaced = 0; score = 0;
+            updateDisplay();
+            renderBoard();
+            stopTimer();
+            document.getElementById('timer').textContent = '000';
+            document.getElementById('status').textContent = '点击格子开始';
+        }
+        
+        function renderBoard() {
+            let html = '';
+            for (let i = 0; i < rows; i++) {
+                for (let j = 0; j < cols; j++) {
+                    let className = 'cell';
+                    if (revealed[i][j]) {
+                        className += ' revealed';
+                        if (mines[i][j]) className += ' mine';
+                    } else if (flagged[i][j]) {
+                        className += ' flagged';
+                    }
+                    html += `<div class="${className}" data-row="${i}" data-col="${j}"></div>`;
+                }
+            }
+            document.getElementById('gameBoard').style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            document.getElementById('gameBoard').innerHTML = html;
+        }
+        
+        function updateDisplay() {
+            document.getElementById('mineCount').textContent = totalMines - flagsPlaced;
+            document.getElementById('score').textContent = score;
+        }
+        
+        function startTimer() {
+            stopTimer();
+            timer = 0;
+            timerInterval = setInterval(() => {
+                timer++;
+                document.getElementById('timer').textContent = timer.toString().padStart(3, '0');
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+        }
+        
+        function resetGame() { initBoard(); }
+        function setDiff(diff) {
+            currentDiff = diff;
+            document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            resetGame();
+        }
+        
+        // 事件监听
+        document.addEventListener('DOMContentLoaded', () => {
+            initBoard();
+            document.getElementById('gameBoard').addEventListener('click', (e) => {
+                let cell = e.target.closest('.cell');
+                if (!cell) return;
+                if (gameOver) return;
+                if (!gameStarted) { startTimer(); gameStarted = true; }
+                // 简化版：点击效果
+                cell.classList.add('revealed');
+                score += 10;
+                updateDisplay();
+            });
+        });
+    </script>
+</body>
+</html>

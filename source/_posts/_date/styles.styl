@@ -1,0 +1,99 @@
+// source/_data/styles.styl
+// 科幻配色变量
+$neon-cyan = #00F3FF
+$neon-magenta = #FF00FF
+$deep-space = #0A0A14
+$text-light = #E0E0FF
+
+// 全局背景
+body {
+  background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%);
+  color: $text-light;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+// 毛玻璃效果容器
+.header-inner, .main-inner, .sidebar-inner {
+  background: rgba(10, 10, 20, 0.7) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba($neon-cyan, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba($neon-cyan, 0.1);
+}
+
+// 霓虹文字效果
+.site-title {
+  color: $neon-cyan;
+  text-shadow: 
+    0 0 5px $neon-cyan,
+    0 0 10px $neon-cyan,
+    0 0 20px darken($neon-cyan, 30%);
+  animation: flicker 2s infinite;
+}
+
+// 链接样式
+a {
+  color: $neon-cyan;
+  border-bottom: 1px dashed rgba($neon-cyan, 0.3);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color: $neon-magenta;
+    border-bottom-color: $neon-magenta;
+    text-shadow: 0 0 8px $neon-magenta;
+  }
+}
+
+// 闪烁动画
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    opacity: 0.5;
+  }
+}
+
+// 菜单项效果
+.menu-item {
+  a {
+    color: $text-light;
+    &:hover {
+      color: $neon-cyan;
+      transform: translateX(5px);
+    }
+  }
+}
+
+// 文章标题
+.post-title {
+  a {
+    color: $neon-cyan;
+    &:hover {
+      color: $neon-magenta;
+    }
+  }
+}
+
+// 代码块科幻风格
+code, pre {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border-left: 3px solid $neon-cyan;
+  color: #00ff9d !important;
+}
+
+// 滚动条美化
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $deep-space;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, $neon-cyan, $neon-magenta);
+  border-radius: 4px;
+}

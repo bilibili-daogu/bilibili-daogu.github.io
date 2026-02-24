@@ -1,0 +1,154 @@
+---
+title: 游戏中心
+date: 2026-02-24
+---
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>游戏中心</title>
+    <style>
+        body {
+            background: #0A0A14;
+            color: #E0E0FF;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #00F3FF;
+            text-align: center;
+            font-size: 3rem;
+            text-shadow: 0 0 10px #00F3FF;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+        .game-card {
+            background: rgba(0,243,255,0.1);
+            border: 2px solid #00F3FF;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #FF00FF;
+            box-shadow: 0 0 30px #FF00FF;
+        }
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+        h3 {
+            color: #00F3FF;
+            font-size: 1.8rem;
+            margin: 10px 0;
+        }
+        p {
+            color: #E0E0FF;
+            margin: 15px 0;
+            line-height: 1.5;
+        }
+        .game-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid #00F3FF;
+            border-radius: 30px;
+            color: #00F3FF;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .game-btn:hover {
+            background: #00F3FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #00F3FF;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 25px;
+            border: 2px solid #FF00FF;
+            border-radius: 30px;
+            color: #FF00FF;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← 返回首页</a>
+
+<h1>🎮 游戏中心</h1>
+
+<div class="games-grid">
+  
+    <!-- 扫雷 -->
+    <div class="game-card">
+        <div class="game-icon">💣</div>
+        <h3>扫雷</h3>
+        <p>经典扫雷游戏，左键挖开，右键标记</p>
+        <a href="/games/minesweeper.html" class="game-btn">开始游戏</a>
+    </div>
+  
+    <!-- 2048 -->
+    <div class="game-card">
+        <div class="game-icon">🧮</div>
+        <h3>2048</h3>
+        <p>数字合成游戏，合并相同数字</p>
+        <a href="/games/2048.html" class="game-btn">开始游戏</a>
+    </div>
+  
+    <!-- 贪吃蛇 -->
+    <div class="game-card">
+        <div class="game-icon">🐍</div>
+        <h3>贪吃蛇</h3>
+        <p>经典贪吃蛇，吃食物变长</p>
+        <a href="/games/snake.html" class="game-btn">开始游戏</a>
+    </div>
+  
+    <!-- 打砖块 -->
+    <div class="game-card">
+        <div class="game-icon">🧱</div>
+        <h3>打砖块</h3>
+        <p>移动挡板反弹球，打掉所有砖块</p>
+        <a href="/games/breakout.html" class="game-btn">开始游戏</a>
+    </div>
+  
+    <!-- 五子棋 -->
+    <div class="game-card">
+        <div class="game-icon">⚫</div>
+        <h3>五子棋</h3>
+        <p>双人对战或人机</p>
+        <a href="/games/gobang.html" class="game-btn">开始游戏</a>
+    </div>
+  
+    <!-- 太空射击 -->
+    <div class="game-card">
+        <div class="game-icon">🚀</div>
+        <h3>太空射击</h3>
+        <p>驾驶飞船，消灭敌人</p>
+        <a href="/games/space-shooter.html" class="game-btn">开始游戏</a>
+    </div>
+  
+    <!-- 记忆翻牌 -->
+    <div class="game-card">
+        <div class="game-icon">🃏</div>
+        <h3>记忆翻牌</h3>
+        <p>考验记忆力，找出所有配对</p>
+        <a href="/games/memory.html" class="game-btn">开始游戏</a>
+    </div>
+  
+</div>
+</body>
+</html>

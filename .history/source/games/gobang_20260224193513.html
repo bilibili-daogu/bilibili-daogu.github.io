@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋 · 人机对战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: #0A0A14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .game-wrapper {
+            background: rgba(10,10,20,0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(0,243,255,0.3);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(255,0,255,0.1);
+            border: 1px solid #FF00FF;
+            border-radius: 30px;
+            color: #FF00FF;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #FF00FF;
+        }
+        .mode-selector {
+            display: flex;
+            gap: 10px;
+        }
+        .mode-btn {
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid #00F3FF;
+            border-radius: 30px;
+            color: #00F3FF;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .mode-btn.active {
+            background: #00F3FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #00F3FF;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #00F3FF;
+            border-radius: 10px;
+            background: #16213e;
+            box-shadow: 0 0 30px rgba(0,243,255,0.3);
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0,243,255,0.1);
+            border: 1px solid #00F3FF;
+            border-radius: 10px;
+            color: #00F3FF;
+            text-align: center;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .restart-btn {
+            margin-top: 15px;
+            padding: 10px;
+            width: 100%;
+            background: transparent;
+            border: 2px solid #FF00FF;
+            border-radius: 10px;
+            color: #FF00FF;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .restart-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 30px #FF00FF;
+        }
+    </style>
+</head>
+<body>
+<div class="game-wrapper">
+    <div class="header">
+        <a href="/games/" class="back-btn">← 返回游戏中心</a>
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="setMode('pvp')">双人对战</button>
+            <button class="mode-btn" onclick="setMode('pve')">人机对战</button>
+        </div>
+    </div>
+
+    <canvas id="boardCanvas" width="560" height="560"></canvas>
+
+    <div class="status" id="gameStatus">黑方回合</div>
+    <button class="restart-btn" onclick="restartGame()">🔄 重新开始</button>
+</div>
+
+<script>
+    const canvas = document.getElementById('boardCanvas');
+    const ctx = canvas.getContext('2d');
+    const statusDiv = document.getElementById('gameStatus');
+
+    const boardSize = 15;
+    const cellSize = canvas.width / boardSize;
+    
+    let board = [];
+    let currentPlayer = 'black';
+    let gameOver = false;
+    let mode = 'pvp'; // pvp 或 pve
+
+    // 初始化棋盘
+    function initBoard() {
+        board = Array(boardSize).fill().map(() => Array(boardSize).fill(null));
+        currentPlayer = 'black';
+        gameOver = false;
+        statusDiv.textContent = '黑方回合';
+        drawBoard();
+    }
+
+    // 绘制棋盘
+    function drawBoard() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 绘制网格
+        ctx.strokeStyle = '#00F3FF';
+        ctx.lineWidth = 1;
+        
+        for (let i = 0; i < boardSize; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * cellSize + cellSize/2, cellSize/2);
+            ctx.lineTo(i * cellSize + cellSize/2, canvas.height - cellSize/2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.moveTo(cellSize/2, i * cellSize + cellSize/2);
+            ctx.lineTo(canvas.width - cellSize/2, i * cellSize + cellSize/2);
+            ctx.stroke();
+        }
+
+        // 绘制棋子
+        for (let i = 0; i < boardSize; i++) {
+            for (let j = 0; j < boardSize; j++) {
+                if (board[i][j]) {
+                    const x = j * cellSize + cellSize/2;
+                    const y = i * cellSize + cellSize/2;
+                    
+                    // 阴影
+                    ctx.shadowColor = board[i][j] === 'black' ? '#00F3FF' : '#FF00FF';
+                    ctx.shadowBlur = 15;
+                    
+                    // 棋子
+                    ctx.beginPath();
+                    ctx.arc(x, y, cellSize/2 - 4, 0, 2 * Math.PI);
+                    
+                    const gradient = ctx.createRadialGradient(x-3, y-3, 2, x, y, cellSize/2);
+                    if (board[i][j] === 'black') {
+                        gradient.addColorStop(0, '#333');
+                        gradient.addColorStop(1, '#000');
+                    } else {
+                        gradient.addColorStop(0, '#fff');
+                        gradient.addColorStop(1, '#ccc');
+                    }
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                    ctx.strokeStyle = board[i][j] === 'black' ? '#00F3FF' : '#FF00FF';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                }
+            }
+        }
+        ctx.shadowBlur = 0;
+    }
+
+    // 检查胜利
+    function checkWin(row, col, player) {
+        const directions = [[1,0], [0,1], [1,1], [1,-1]];
+        
+        for (let [dx, dy] of directions) {
+            let count = 1;
+            
+            // 正方向
+            for (let i = 1; i < 5; i++) {
+                const nr = row + dx * i;
+                const nc = col + dy * i;
+                if (nr < 0 || nr >= boardSize || nc < 0 || nc >= boardSize || board[nr][nc] !== player) break;
+                count++;
+            }
+            
+            // 反方向
+            for (let i = 1; i < 5; i++) {
+                const nr = row - dx * i;
+                const nc = col - dy * i;
+                if (nr < 0 || nr >= boardSize || nc < 0 || nc >= boardSize || board[nr][nc] !== player) break;
+                count++;
+            }
+            
+            if (count >= 5) return true;
+        }
+        return false;
+    }
+
+    // 落子
+    function placePiece(row, col) {
+        if (gameOver) return false;
+        if (row < 0 || row >= boardSize || col < 0 || col >= boardSize) return false;
+        if (board[row][col]) return false;
+
+        board[row][col] = currentPlayer;
+        drawBoard();
+
+        if (checkWin(row, col, currentPlayer)) {
+            statusDiv.textContent = `${currentPlayer === 'black' ? '黑方' : '白方'} 胜利！`;
+            gameOver = true;
+            return true;
+        }
+
+        currentPlayer = currentPlayer === 'black' ? 'white' : 'black';
+        statusDiv.textContent = `${currentPlayer === 'black' ? '黑方' : '白方'}回合`;
+
+        // 人机模式：如果轮到白方且不是游戏结束，AI落子
+        if (mode === 'pve' && currentPlayer === 'white' && !gameOver) {
+            setTimeout(aiMove, 300);
+        }
+
+        return true;
+    }
+
+    // AI简单逻辑
+    function aiMove() {
+        if (gameOver) return;
+
+        let bestScore = -1;
+        let bestMove = null;
+
+        for (let i = 0; i < boardSize; i++) {
+            for (let j = 0; j < boardSize; j++) {
+                if (!board[i][j]) {
+                    // 简单评分：越靠近中心越好
+                    const centerDist = Math.abs(i - 7) + Math.abs(j - 7);
+                    const score = 100 - centerDist;
+                    
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMove = [i, j];
+                    }
+                }
+            }
+        }
+
+        if (bestMove) {
+            placePiece(bestMove[0], bestMove[1]);
+        }
+    }
+
+    // 点击处理
+    canvas.addEventListener('click', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const col = Math.floor(x / cellSize);
+        const row = Math.floor(y / cellSize);
+        
+        if (mode === 'pvp' || (mode === 'pve' && currentPlayer === 'black')) {
+            placePiece(row, col);
+        }
+    });
+
+    // 设置模式
+    function setMode(newMode) {
+        mode = newMode;
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        restartGame();
+    }
+
+    // 重新开始
+    function restartGame() {
+        initBoard();
+    }
+
+    // 初始化
+    initBoard();
+</script>
+</body>
+</html>

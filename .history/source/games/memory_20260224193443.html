@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>记忆翻牌 · 脑力挑战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: #0A0A14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .game-container {
+            background: rgba(10,10,20,0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 0 40px rgba(0,243,255,0.3);
+            width: 700px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(255,0,255,0.1);
+            border: 1px solid #FF00FF;
+            border-radius: 30px;
+            color: #FF00FF;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #FF00FF;
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            padding: 8px 20px;
+            background: rgba(0,243,255,0.1);
+            border: 1px solid #00F3FF;
+            border-radius: 30px;
+            color: #00F3FF;
+            font-size: 1.2rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid #00F3FF;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0,243,255,0.2);
+        }
+        .card.flipped {
+            background: #0F0F1A;
+            border-color: #FF00FF;
+            box-shadow: 0 0 30px #FF00FF;
+        }
+        .card.matched {
+            border-color: #00FF00;
+            box-shadow: 0 0 30px #00FF00;
+            cursor: default;
+        }
+        .card.matched::after {
+            content: '✓';
+            position: absolute;
+            color: #00FF00;
+            font-size: 1rem;
+            margin-top: -30px;
+        }
+        .restart-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid #FF00FF;
+            border-radius: 10px;
+            color: #FF00FF;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        .restart-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 30px #FF00FF;
+        }
+    </style>
+</head>
+<body>
+<div class="game-container">
+    <div class="header">
+        <a href="/games/" class="back-btn">← 返回游戏中心</a>
+        <div class="stats">
+            <div class="stat-box" id="moves">0 步</div>
+            <div class="stat-box" id="pairs">0/8 对</div>
+        </div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+    <button class="restart-btn" onclick="initGame()">🔄 重新开始</button>
+</div>
+
+<script>
+    const icons = [
+        '🚀', '👽', '🛸', '🌕', '⭐', '☄️', '🪐', '👾',
+        '🚀', '👽', '🛸', '🌕', '⭐', '☄️', '🪐', '👾'
+    ];
+    
+    let cards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let lockBoard = false;
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initGame() {
+        cards = shuffle([...icons]);
+        flippedCards = [];
+        matchedPairs = 0;
+        moves = 0;
+        lockBoard = false;
+        updateStats();
+        render();
+    }
+
+    function render() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+        
+        cards.forEach((icon, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            if (flippedCards.includes(index) || cards[index] === 'matched') {
+                card.classList.add('flipped');
+                card.textContent = icon;
+            }
+            if (cards[index] === 'matched') {
+                card.classList.add('matched');
+            }
+            card.onclick = () => flipCard(index);
+            grid.appendChild(card);
+        });
+    }
+
+    function flipCard(index) {
+        if (lockBoard) return;
+        if (flippedCards.includes(index)) return;
+        if (cards[index] === 'matched') return;
+        if (flippedCards.length === 2) return;
+
+        flippedCards.push(index);
+        moves++;
+        updateStats();
+        render();
+
+        if (flippedCards.length === 2) {
+            checkMatch();
+        }
+    }
+
+    function checkMatch() {
+        lockBoard = true;
+        const [i, j] = flippedCards;
+        
+        if (cards[i] === cards[j]) {
+            // 配对成功
+            cards[i] = 'matched';
+            cards[j] = 'matched';
+            matchedPairs++;
+            flippedCards = [];
+            lockBoard = false;
+            updateStats();
+            
+            if (matchedPairs === 8) {
+                setTimeout(() => alert('🎉 恭喜！你赢了！'), 300);
+            }
+        } else {
+            // 配对失败，1秒后翻回
+            setTimeout(() => {
+                flippedCards = [];
+                lockBoard = false;
+                render();
+            }, 1000);
+        }
+        render();
+    }
+
+    function updateStats() {
+        document.getElementById('moves').textContent = moves + ' 步';
+        document.getElementById('pairs').textContent = matchedPairs + '/8 对';
+    }
+
+    initGame();
+</script>
+</body>
+</html>

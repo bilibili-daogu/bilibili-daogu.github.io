@@ -1,0 +1,15 @@
+# _config.next.yml
+
+# Schemes
+# scheme: Muse
+# scheme: Mist
+# scheme: Pisces
+scheme: Gemini
+
+# Dark Mode
+darkmode: true
+# _config.next.yml
+custom_file_path:
+  style: source/_data/styles.styl
+  custom_file_path:
+  style: source/_data/styles.styl
