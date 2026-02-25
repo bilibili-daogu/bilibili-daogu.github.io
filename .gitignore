@@ -1,2 +1,4 @@
 "node_modules/.store/public-encrypt@*/**/test_rsa_privkey.pem" 
 "node_modules/**/test_*.pem" 
+"node_modules/.store/public-encrypt@*/**/test_rsa_privkey.pem" 
+"node_modules/**/test_*.pem" 

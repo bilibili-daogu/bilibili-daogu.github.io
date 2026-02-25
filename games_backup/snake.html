@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bilibili-daogu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12,"width":300,"toc":{"enable":true,"number":true,"max_depth":3}},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="贪吃蛇 · 科幻版              * {             box-sizing: border-box;             user-select: none;         }         body {             background: #0A0A14;             display: flex;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="daogu">
+<meta property="og:url" content="https://bilibili-daogu.github.io/games_backup/snake.html">
+<meta property="og:site_name" content="daogu">
+<meta property="og:description" content="贪吃蛇 · 科幻版              * {             box-sizing: border-box;             user-select: none;         }         body {             background: #0A0A14;             display: flex;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-24T10:12:38.674Z">
+<meta property="article:modified_time" content="2026-02-24T10:12:38.674Z">
+<meta property="article:author" content="xidaogua">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://bilibili-daogu.github.io/games_backup/snake">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://bilibili-daogu.github.io/games_backup/snake.html","path":"games_backup/snake.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | daogu
+</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">daogu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-games"><a href="/games/" rel="section"><i class="fa fa-gamepad fa-fw"></i>games</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">🐍 贪吃蛇</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xidaogua</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇 · 科幻版</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            background: #0A0A14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .game-container {
+            background: rgba(10,10,20,0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0,243,255,0.3);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #00F3FF;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px #00F3FF;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .score-box {
+            background: rgba(0,243,255,0.1);
+            border: 1px solid #00F3FF;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: #00F3FF;
+            font-size: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .new-game {
+            background: transparent;
+            border: 2px solid #FF00FF;
+            color: #FF00FF;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .new-game:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #FF00FF;
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #00F3FF;
+            border-radius: 8px;
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(0,243,255,0.2);
+        }
+        .instructions {
+            color: rgba(224,224,255,0.8);
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #FF00FF;
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+        }
+        .back-link:hover {
+            text-shadow: 0 0 10px #FF00FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <a href="/games/" class="back-link">← 返回游戏中心</a>
+        <h1>🐍 贪吃蛇</h1>
+        
+        <div class="header">
+            <div class="score-box" id="score">0</div>
+            <button class="new-game" id="newGame">新游戏</button>
+        </div>
+        
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        
+        <div class="instructions">
+            ｜ 方向键控制 ｜ 吃到食物变长 ｜ 撞墙或撞自己结束 ｜
+        </div>
+    </div>
+
+    <script>
+        class SnakeGame {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.gridSize = 20;
+                this.cellSize = 20;
+                this.snake = [];
+                this.food = { x: 0, y: 0 };
+                this.direction = 'right';
+                this.nextDirection = 'right';
+                this.score = 0;
+                this.gameOver = false;
+                this.gameLoop = null;
+                this.init();
+                this.setupListeners();
+            }
+            
+            init() {
+                this.snake = [
+                    { x: 10, y: 10 },
+                    { x: 9, y: 10 },
+                    { x: 8, y: 10 }
+                ];
+                this.direction = 'right';
+                this.nextDirection = 'right';
+                this.score = 0;
+                this.gameOver = false;
+                this.generateFood();
+                this.updateScore();
+                this.draw();
+                if (this.gameLoop) clearInterval(this.gameLoop);
+                this.gameLoop = setInterval(() => this.update(), 150);
+            }
+            
+            generateFood() {
+                do {
+                    this.food.x = Math.floor(Math.random() * this.gridSize);
+                    this.food.y = Math.floor(Math.random() * this.gridSize);
+                } while (this.snake.some(segment => segment.x === this.food.x && segment.y === this.food.y));
+            }
+            
+            update() {
+                if (this.gameOver) return;
+                
+                // 更新方向
+                this.direction = this.nextDirection;
+                
+                // 移动蛇头
+                const head = { ...this.snake[0] };
+                switch (this.direction) {
+                    case 'right': head.x++; break;
+                    case 'left': head.x--; break;
+                    case 'up': head.y--; break;
+                    case 'down': head.y++; break;
+                }
+                
+                // 检查是否吃到食物
+                if (head.x === this.food.x && head.y === this.food.y) {
+                    this.snake.unshift(head);
+                    this.score += 10;
+                    this.updateScore();
+                    this.generateFood();
+                } else {
+                    this.snake.unshift(head);
+                    this.snake.pop();
+                }
+                
+                // 检查碰撞
+                if (this.checkCollision()) {
+                    this.gameOver = true;
+                    clearInterval(this.gameLoop);
+                }
+                
+                this.draw();
+            }
+            
+            checkCollision() {
+                const head = this.snake[0];
+                
+                // 撞墙
+                if (head.x < 0 || head.x >= this.gridSize || head.y < 0 || head.y >= this.gridSize) {
+                    return true;
+                }
+                
+                // 撞自己
+                for (let i = 1; i < this.snake.length; i++) {
+                    if (this.snake[i].x === head.x && this.snake[i].y === head.y) {
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+            
+            draw() {
+                this.ctx.clearRect(0, 0, 400, 400);
+                
+                // 绘制网格
+                this.ctx.strokeStyle = 'rgba(0,243,255,0.1)';
+                this.ctx.lineWidth = 0.5;
+                for (let i = 0; i <= this.gridSize; i++) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(i * this.cellSize, 0);
+                    this.ctx.lineTo(i * this.cellSize, 400);
+                    this.ctx.stroke();
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, i * this.cellSize);
+                    this.ctx.lineTo(400, i * this.cellSize);
+                    this.ctx.stroke();
+                }
+                
+                // 绘制食物
+                this.ctx.fillStyle = '#FF00FF';
+                this.ctx.shadowColor = '#FF00FF';
+                this.ctx.shadowBlur = 10;
+                this.ctx.fillRect(this.food.x * this.cellSize + 2, this.food.y * this.cellSize + 2, this.cellSize - 4, this.cellSize - 4);
+                
+                // 绘制蛇
+                this.snake.forEach((segment, index) => {
+                    const gradient = this.ctx.createLinearGradient(
+                        segment.x * this.cellSize, 
+                        segment.y * this.cellSize,
+                        (segment.x + 1) * this.cellSize, 
+                        (segment.y + 1) * this.cellSize
+                    );
+                    gradient.addColorStop(0, index === 0 ? '#00F3FF' : '#0088FF');
+                    gradient.addColorStop(1, index === 0 ? '#0088FF' : '#00F3FF');
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.shadowColor = '#00F3FF';
+                    this.ctx.shadowBlur = index === 0 ? 15 : 5;
+                    this.ctx.fillRect(segment.x * this.cellSize + 2, segment.y * this.cellSize + 2, this.cellSize - 4, this.cellSize - 4);
+                });
+                
+                this.ctx.shadowBlur = 0;
+                
+                // 游戏结束
+                if (this.gameOver) {
+                    this.ctx.fillStyle = 'rgba(255,0,255,0.8)';
+                    this.ctx.font = 'bold 30px Orbitron';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.shadowColor = '#FF00FF';
+                    this.ctx.shadowBlur = 15;
+                    this.ctx.fillText('GAME OVER', 200, 200);
+                    this.ctx.shadowBlur = 0;
+                }
+            }
+            
+            updateScore() {
+                document.getElementById('score').textContent = this.score;
+            }
+            
+            setupListeners() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key.startsWith('Arrow')) e.preventDefault();
+                    
+                    if (!this.gameOver) {
+                        if (e.key === 'ArrowRight' && this.direction !== 'left') {
+                            this.nextDirection = 'right';
+                        } else if (e.key === 'ArrowLeft' && this.direction !== 'right') {
+                            this.nextDirection = 'left';
+                        } else if (e.key === 'ArrowUp' && this.direction !== 'down') {
+                            this.nextDirection = 'up';
+                        } else if (e.key === 'ArrowDown' && this.direction !== 'up') {
+                            this.nextDirection = 'down';
+                        }
+                    }
+                });
+                
+                document.getElementById('newGame').addEventListener('click', () => {
+                    clearInterval(this.gameLoop);
+                    this.init();
+                });
+            }
+        }
+        
+        new SnakeGame();
+    </script>
+</body>
+</html>
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">系稻谷啊</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bilibili-daogu.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12,"width":300,"toc":{"enable":true,"number":true,"max_depth":3}},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="科幻扫雷 · 经典游戏              * {             box-sizing: border-box;             user-select: none;         }                  body {             background: #0A0A14;             display:">
+<meta property="og:type" content="website">
+<meta property="og:title" content="daogu">
+<meta property="og:url" content="https://bilibili-daogu.github.io/games_backup/minesweeper.html">
+<meta property="og:site_name" content="daogu">
+<meta property="og:description" content="科幻扫雷 · 经典游戏              * {             box-sizing: border-box;             user-select: none;         }                  body {             background: #0A0A14;             display:">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-02-24T09:29:49.469Z">
+<meta property="article:modified_time" content="2026-02-24T09:21:01.128Z">
+<meta property="article:author" content="xidaogua">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://bilibili-daogu.github.io/games_backup/minesweeper">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://bilibili-daogu.github.io/games_backup/minesweeper.html","path":"games_backup/minesweeper.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title> | daogu
+</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">daogu</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-games"><a href="/games/" rel="section"><i class="fa fa-gamepad fa-fw"></i>games</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">🚀 扫雷</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">xidaogua</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner page posts-expand">
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+          <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科幻扫雷 · 经典游戏</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        
+        body {
+            background: #0A0A14;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Rajdhani', 'Microsoft YaHei', sans-serif;
+        }
+        
+        .game-container {
+            background: rgba(10, 10, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 2px solid #00F3FF;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #00F3FF;
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            text-shadow: 0 0 10px #00F3FF, 0 0 20px #00F3FF;
+            letter-spacing: 4px;
+        }
+        
+        .subtitle {
+            color: #FF00FF;
+            text-align: center;
+            margin-top: -5px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            text-shadow: 0 0 5px #FF00FF;
+        }
+        
+        .control-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 243, 255, 0.1);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 50px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .mine-counter {
+            color: #00F3FF;
+            font-size: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 5px #00F3FF;
+        }
+        
+        .reset-btn {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 0, 255, 0.2);
+            border: 2px solid #FF00FF;
+            border-radius: 50%;
+            color: #FF00FF;
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.3);
+        }
+        
+        .reset-btn:hover {
+            background: #FF00FF;
+            color: #0A0A14;
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 0 30px #FF00FF;
+        }
+        
+        .timer {
+            color: #00F3FF;
+            font-size: 1.5rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 5px #00F3FF;
+        }
+        
+        .difficulty {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .diff-btn {
+            background: transparent;
+            border: 2px solid #00F3FF;
+            color: #00F3FF;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .diff-btn.active {
+            background: #00F3FF;
+            color: #0A0A14;
+            box-shadow: 0 0 20px #00F3FF;
+        }
+        
+        .diff-btn:hover {
+            border-color: #FF00FF;
+            color: #FF00FF;
+        }
+        
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 2px;
+            background: rgba(0, 243, 255, 0.2);
+            border: 2px solid #00F3FF;
+            border-radius: 8px;
+            padding: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .cell {
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #00F3FF;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        .cell.revealed {
+            background: rgba(0, 243, 255, 0.1);
+            border-color: #FF00FF;
+            color: #FF00FF;
+        }
+        
+        .cell.flagged::before {
+            content: '⚑';
+            color: #FF00FF;
+            font-size: 1.4rem;
+            text-shadow: 0 0 5px #FF00FF;
+        }
+        
+        .cell.mine.revealed::before {
+            content: '💣';
+            font-size: 1.2rem;
+        }
+        
+        .cell:active:not(.revealed):not(.flagged) {
+            background: rgba(0, 243, 255, 0.3);
+            transform: scale(0.95);
+        }
+        
+        .status {
+            text-align: center;
+            color: #FF00FF;
+            font-size: 1.2rem;
+            min-height: 30px;
+            text-shadow: 0 0 5px #FF00FF;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        @media (max-width: 600px) {
+            .game-container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .cell {
+                font-size: 1rem;
+            }
+            
+            .diff-btn {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🚀 扫雷</h1>
+        <div class="subtitle">MINESWEEPER · 科幻版</div>
+        
+        <div class="difficulty">
+            <button class="diff-btn active" data-diff="beginner">初级</button>
+            <button class="diff-btn" data-diff="intermediate">中级</button>
+            <button class="diff-btn" data-diff="expert">高级</button>
+        </div>
+        
+        <div class="control-panel">
+            <div class="mine-counter" id="mineCounter">00</div>
+            <div class="reset-btn" id="resetBtn">↻</div>
+            <div class="timer" id="timer">000</div>
+        </div>
+        
+        <div class="game-board" id="gameBoard"></div>
+        
+        <div class="status" id="status">点击格子开始游戏</div>
+    </div>
+
+    <script>
+        class Minesweeper {
+            constructor() {
+                this.difficulties = {
+                    beginner: { rows: 9, cols: 9, mines: 10 },
+                    intermediate: { rows: 16, cols: 16, mines: 40 },
+                    expert: { rows: 16, cols: 30, mines: 99 }
+                };
+                
+                this.currentDiff = 'beginner';
+                this.board = [];
+                this.mines = [];
+                this.revealed = [];
+                this.flagged = [];
+                this.gameOver = false;
+                this.gameWon = false;
+                this.gameStarted = false;
+                this.minesCount = 10;
+                this.flagsCount = 0;
+                this.timer = 0;
+                this.timerInterval = null;
+                
+                this.init();
+                this.setupEventListeners();
+            }
+            
+            init() {
+                const diff = this.difficulties[this.currentDiff];
+                this.rows = diff.rows;
+                this.cols = diff.cols;
+                this.minesCount = diff.mines;
+                this.flagsCount = 0;
+                this.gameOver = false;
+                this.gameWon = false;
+                this.gameStarted = false;
+                
+                // 初始化数组
+                this.board = Array(this.rows).fill().map(() => Array(this.cols).fill(0));
+                this.mines = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+                this.revealed = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+                this.flagged = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+                
+                this.renderBoard();
+                this.updateMineCounter();
+                this.resetTimer();
+                document.getElementById('status').textContent = '点击格子开始游戏';
+            }
+            
+            setupEventListeners() {
+                document.querySelectorAll('.diff-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                        this.currentDiff = e.target.dataset.diff;
+                        this.init();
+                    });
+                });
+                
+                document.getElementById('resetBtn').addEventListener('click', () => {
+                    this.init();
+                });
+            }
+            
+            generateMines(firstRow, firstCol) {
+                // 确保第一次点击的位置不是雷
+                let minesPlaced = 0;
+                while (minesPlaced < this.minesCount) {
+                    const row = Math.floor(Math.random() * this.rows);
+                    const col = Math.floor(Math.random() * this.cols);
+                    
+                    // 避免在第一次点击的位置及其周围放雷
+                    if (!this.mines[row][col] && 
+                        Math.abs(row - firstRow) > 1 || Math.abs(col - firstCol) > 1) {
+                        this.mines[row][col] = true;
+                        minesPlaced++;
+                    }
+                }
+                
+                // 计算每个格子周围的雷数
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        if (!this.mines[i][j]) {
+                            let count = 0;
+                            for (let di = -1; di <= 1; di++) {
+                                for (let dj = -1; dj <= 1; dj++) {
+                                    const ni = i + di, nj = j + dj;
+                                    if (ni >= 0 && ni < this.rows && nj >= 0 && nj < this.cols && this.mines[ni][nj]) {
+                                        count++;
+                                    }
+                                }
+                            }
+                            this.board[i][j] = count;
+                        }
+                    }
+                }
+            }
+            
+            handleCellClick(row, col, isRightClick = false) {
+                if (this.gameOver || this.gameWon) return;
+                if (this.revealed[row][col]) return;
+                
+                if (isRightClick) {
+                    // 右键标记旗帜
+                    if (!this.revealed[row][col]) {
+                        this.flagged[row][col] = !this.flagged[row][col];
+                        this.flagsCount += this.flagged[row][col] ? 1 : -1;
+                        this.updateMineCounter();
+                        this.renderBoard();
+                        this.checkWin();
+                    }
+                    return;
+                }
+                
+                // 左键点击
+                if (this.flagged[row][col]) return;
+                
+                if (!this.gameStarted) {
+                    this.startTimer();
+                    this.gameStarted = true;
+                    this.generateMines(row, col);
+                }
+                
+                if (this.mines[row][col]) {
+                    // 点到雷了
+                    this.gameOver = true;
+                    this.stopTimer();
+                    this.revealAll();
+                    document.getElementById('status').textContent = '💥 游戏结束！';
+                } else {
+                    this.floodFill(row, col);
+                    this.checkWin();
+                }
+                
+                this.renderBoard();
+            }
+            
+            floodFill(row, col) {
+                if (row < 0 || row >= this.rows || col < 0 || col >= this.cols) return;
+                if (this.revealed[row][col]) return;
+                if (this.flagged[row][col]) return;
+                if (this.mines[row][col]) return;
+                
+                this.revealed[row][col] = true;
+                
+                if (this.board[row][col] === 0) {
+                    for (let di = -1; di <= 1; di++) {
+                        for (let dj = -1; dj <= 1; dj++) {
+                            this.floodFill(row + di, col + dj);
+                        }
+                    }
+                }
+            }
+            
+            revealAll() {
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        if (this.mines[i][j]) {
+                            this.revealed[i][j] = true;
+                        }
+                    }
+                }
+            }
+            
+            checkWin() {
+                let revealedCount = 0;
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        if (this.revealed[i][j]) revealedCount++;
+                    }
+                }
+                
+                if (revealedCount === this.rows * this.cols - this.minesCount) {
+                    this.gameWon = true;
+                    this.stopTimer();
+                    document.getElementById('status').textContent = '✨ 恭喜你赢了！ ✨';
+                    
+                    // 标记所有雷
+                    for (let i = 0; i < this.rows; i++) {
+                        for (let j = 0; j < this.cols; j++) {
+                            if (this.mines[i][j] && !this.flagged[i][j]) {
+                                this.flagged[i][j] = true;
+                            }
+                        }
+                    }
+                    this.renderBoard();
+                }
+            }
+            
+            renderBoard() {
+                const boardElement = document.getElementById('gameBoard');
+                boardElement.style.gridTemplateColumns = `repeat(${this.cols}, 1fr)`;
+                
+                let html = '';
+                for (let i = 0; i < this.rows; i++) {
+                    for (let j = 0; j < this.cols; j++) {
+                        let className = 'cell';
+                        let content = '';
+                        
+                        if (this.revealed[i][j]) {
+                            className += ' revealed';
+                            if (this.mines[i][j]) {
+                                className += ' mine';
+                                content = '💣';
+                            } else if (this.board[i][j] > 0) {
+                                content = this.board[i][j];
+                            }
+                        } else if (this.flagged[i][j]) {
+                            className += ' flagged';
+                        }
+                        
+                        html += `<div class="${className}" data-row="${i}" data-col="${j}">${content}</div>`;
+                    }
+                }
+                
+                boardElement.innerHTML = html;
+            }
+            
+            updateMineCounter() {
+                const counter = document.getElementById('mineCounter');
+                const remaining = this.minesCount - this.flagsCount;
+                counter.textContent = remaining.toString().padStart(2, '0');
+            }
+            
+            startTimer() {
+                this.stopTimer();
+                this.timer = 0;
+                this.timerInterval = setInterval(() => {
+                    this.timer++;
+                    document.getElementById('timer').textContent = 
+                        this.timer.toString().padStart(3, '0');
+                }, 1000);
+            }
+            
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+            
+            resetTimer() {
+                this.stopTimer();
+                this.timer = 0;
+                document.getElementById('timer').textContent = '000';
+            }
+        }
+        
+        // 初始化游戏
+        const game = new Minesweeper();
+        
+        // 添加事件监听
+        document.getElementById('gameBoard').addEventListener('click', (e) => {
+            const cell = e.target.closest('.cell');
+            if (!cell) return;
+            
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            game.handleCellClick(row, col, false);
+        });
+        
+        document.getElementById('gameBoard').addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const cell = e.target.closest('.cell');
+            if (!cell) return;
+            
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+            game.handleCellClick(row, col, true);
+        });
+    </script>
+</body>
+</html>
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">系稻谷啊</span>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
